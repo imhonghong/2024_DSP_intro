@@ -7,9 +7,9 @@ if ws_over>ws
     idx=idx-1;
 end
 
-wcc = 20*log10(abs(h(idx)));
-valid = wcc>As;
-att = abs(wcc);
+wcc = abs(h(idx));
+wcc_dB = 20*log10(wcc);
+valid = abs(wcc_dB)>As;
+att = abs(wcc_dB);
 
 end
-
