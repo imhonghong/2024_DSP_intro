@@ -35,3 +35,25 @@ title('Impulse Response (Kaiser Window)');
 xlabel('n');
 ylabel('h[n]');
 grid on;
+
+%% for loop finding
+yes_B=[];
+yes_L=[];
+for BETA=3:0.001:5
+    for L=5:1:100
+        hhh = fir1(L, wc, 'low', kaiser((L+1), BETA));
+        [h,w] = freqz(hhh,1,1024);
+        [max_Rp,passband_ripples] = check_rp(h,w, wp);
+        [att, valid] = check_As(h, w, ws, as);
+        
+        if valid && max_Rp<rp
+            yes_B=[yes_B BETA];
+            yes_L=[yes_L L];
+            fprintf('BETA=%d N=%d  max_ripple=%f  att=%d \n YYYYYEEEEEEEESSSSSS', BETA, L, max_Rp, att);
+            break
+        else
+            L = L+1;
+            fprintf('BETA=%d N=%d \n', BETA, L);
+        end
+    end
+end
